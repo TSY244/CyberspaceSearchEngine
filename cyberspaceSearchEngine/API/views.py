@@ -13,8 +13,9 @@ es_port = config.get("es", "port")
 info_index = config.get("es", "info_index")
 vuls_index = config.get("es", "vuls_index")
 
-info_parameters=["site","port","area","tide","vuls"]
-vuls_parameters=["site","prt_name","vul_type","vul_numb"]
+info_parameters = ["site", "port", "area", "tide", "vuls"]
+vuls_parameters = ["site", "prt_name", "vul_type", "vul_numb"]
+
 
 def search_info(request):
     global es_host, es_port, info_index, vuls_index
@@ -24,9 +25,9 @@ def search_info(request):
         body = {
             "query": {
                 "bool": {
-                "should": [
-                ],
-                "minimum_should_match": 1
+                    "should": [
+                    ],
+                    "minimum_should_match": 1
                 }
             }
         }
@@ -47,13 +48,14 @@ def search_info(request):
             for vul in get_request["vuls"].split(","):
                 body["query"]["bool"]["should"].append({"term": {"vuls": vul}})
 
-        ret=es.search_data_by_body(info_index, body=body)
+        ret = es.search_data_by_body(info_index, body=body)
         result = ret["hits"]["hits"]
         for i in range(len(result)):
             result[i] = result[i]["_source"]
         return JsonResponse(result, safe=False)
     else:
         return JsonResponse({"error": "method not allowed"}, status=405)
+
 
 def search_vuls(request):
     if request.method == "GET":
@@ -62,9 +64,9 @@ def search_vuls(request):
         body = {
             "query": {
                 "bool": {
-                "should": [
-                ],
-                "minimum_should_match": 1
+                    "should": [
+                    ],
+                    "minimum_should_match": 1
                 }
             }
         }
@@ -82,7 +84,7 @@ def search_vuls(request):
             vul_numb = get_request["vul_numb"][1:-1]
             body["query"]["bool"]["should"].append({"term": {"vul_numb.keyword": vul_numb}})
 
-        ret=es.search_data_by_body(vuls_index, body=body)
+        ret = es.search_data_by_body(vuls_index, body=body)
         result = ret["hits"]["hits"]
         for i in range(len(result)):
             result[i] = result[i]["_source"]
