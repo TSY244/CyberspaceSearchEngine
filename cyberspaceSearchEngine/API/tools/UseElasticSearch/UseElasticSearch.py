@@ -54,7 +54,7 @@ class MyElasticSearch:
         return result
     
     def search_data_by_body(self,index_name,body):
-        result = self.es.search(index=index_name,body=body)
+        result = self.es.search(index=index_name,body=body,size=10000)
         return result
     
     def if_index_exit(self,index_name):

@@ -102,19 +102,28 @@ thread=20
 使用
 
 ```
-docker build .
+docker build -t scan_node .
+docker run -dit scan_node
 ```
+
+如果发现没有启动
+
+进入容器，然后启动
+
+```
+./run.sh
+```
+
+
+
+
 
 ### 直接运行
 
 ```python
 pip -r requirements.txt
-python main
+./run.sh
 ```
-
-
-
-
 
 # api
 
